@@ -1,10 +1,21 @@
+var onPresence = false
+
 function afterNavigate() {
     if (location.pathname.match(/\/presence/g)) {
-        presencePage()
+        if (!onPresence) {
+            onPresence = true
+            presencePage()
+        }
+    } else {
+        onPresence = false
     }
 }
 // https://developer.mozilla.org/fr/docs/Web/API/HTMLElement/transitionend_event width & opacity on turbolinks-progress-bar
-afterNavigate()
+setInterval(() => {
+    afterNavigate()
+}, 1000);
+
+
 
 async function presencePage() {
     let tokenInput = document.getElementById("presence_token")
