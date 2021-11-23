@@ -13,4 +13,14 @@
 
 ## Usage
 
-- When you're on the submit token page, new options appear.
+When you're on the submit token page, new options appear.
+
+- Nobody sent a token
+
+If you're the first person to send a token, it will be added to the database.
+
+- Someone already submit the token
+
+If the token is present, it will be automatically pre-enter in the token input.
+
+Good job ! You're now a bad student
