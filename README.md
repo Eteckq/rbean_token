@@ -1,6 +1,6 @@
 <div align="center">
     <h1>RBean Utils</h1>
-    <h3>Follow this guide to install the extension (only works in Chrome !)</h3>
+    <h3>Follow this guide to install the extension (only works in Chrome AND Firefox !)</h3>
 </div>
 
 ## Installation
@@ -14,13 +14,11 @@
 - In the window that pops up, **select the folder that contains this extension**, then **click _ok_**.
 - **Done!** A new extension called _RBean Tricks_ should have appeared in the list.
 
-### Firefox (not stable)
+### Firefox
 - **Clone** this repo on your computer (or download the zip archive)
 `git clone https://github.com/Eteckq/rbean_token.git`
 - Next steps need to be done at at every firefox restart..
-- **Open [the extensions page](about:debugging#/runtime/this-firefox)** in your browser: `about:debugging#/runtime/this-firefox` 
-- Click the button **_load a module_**. (**_Charger un module complementaire temporaire_**)
-- In the window that pops up, **select the ZIP folder that contains this extension (called firefox-app.zip)**, then **click _ok_**.
+- **Open your browser**, then Drag the file rbean_tricks-1.0.0-fx.xpi in your browser and **click _ok_** to install add-on.
 - **Done!** A new extension called _RBean Tricks_ should have appeared in the list.
 
 ## Usage
