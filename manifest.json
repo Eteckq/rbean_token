@@ -1,21 +1,12 @@
 {
-    "manifest_version": 3,
+    "manifest_version": 2,
     "name": "RBean Tricks",
     "description": "Share RBean Token. Private app for 2600 students",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icons": {
         "16": "logo/logo-16.png",
         "48": "logo/logo-32.png",
         "128": "logo/logo-32.png"
-    },
-    "action": {
-        "default_title": "RBean Token"
-    },
-    "host_permissions": [
-        "*://*.yohangastoud.fr/*"
-    ],
-    "background": {
-        "service_worker": "service-worker.js"
     },
     "content_scripts": [
         {
