@@ -15,7 +15,7 @@
 - **Done!** A new extension called _RBean Tricks_ should have appeared in the list.
 
 ### Firefox
-- **Download file** [the rbean_tricks-1.0.0-fx.xpi page](https://github.com/Eteckq/rbean_token/raw/master/rbean_tricks-1.0.0-fx.xpi)
+- **Download file** [the rbean_tricks-1.0.0-fx.xpi](https://github.com/Eteckq/rbean_token/raw/master/rbean_tricks-1.0.0-fx.xpi)
 - **Open your browser**, then Drag the file rbean_tricks-1.0.0-fx.xpi in your browser and **click _ok_** to install add-on.
 - **Done!** A new extension called _RBean Tricks_ should have appeared in the list.
 
