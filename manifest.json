@@ -8,6 +8,13 @@
         "48": "logo/logo-32.png",
         "128": "logo/logo-32.png"
     },
+    "browser_action": {
+        "default_title": "RBean Tokens",
+        "default_popup": "popup/popup.html"
+    },
+    "permissions": [
+        "https://api-rbean.yohangastoud.fr/*"
+    ],
     "content_scripts": [
         {
             "js": [

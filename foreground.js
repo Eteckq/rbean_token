@@ -1,5 +1,4 @@
-var onPresence = false
-
+let onPresence = false
 function afterNavigate() {
     if (location.pathname.match(/\/presence/g)) {
         if (!onPresence) {
@@ -13,38 +12,43 @@ function afterNavigate() {
 // https://developer.mozilla.org/fr/docs/Web/API/HTMLElement/transitionend_event width & opacity on turbolinks-progress-bar
 setInterval(() => {
     afterNavigate()
-}, 1000);
+}, 500);
 
-
+const API = "https://api-rbean.yohangastoud.fr/"
+// const API = "http://localhost:5005/"
 
 async function presencePage() {
-    let tokenInput = document.getElementById("presence_token")
+    let token = ""
 
-    let token = await getToken()
+    try {
+        token = await getToken()
+    } catch (error) {
+        console.error(error);
+    }
 
     if (!token) {
-        notif("No token available. Submit your token to share it !", "danger")
-        document.querySelector(".simple_form").addEventListener("submit", function (e) {
-            if (confirm("Le token va être envoyé à tous le monde (Annuler pour ne pas envoyer le token)")) {
-                fetch("https://api-rbean.yohangastoud.fr/token", {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-                        'Content-Type': 'application/json; charset=utf-8'
-                    },
-                    body: JSON.stringify({ session: getSession(), token: document.getElementById("presence_token").value })
-                })
-                    .then(response => {
+        fetch(API).then(response => {
+            if (response.ok) {
+                notif("No token available. Submit your token to share it !", "warning")
+                document.querySelector(".simple_form").addEventListener("submit", function (e) {
+                    if (confirm("Le token va être envoyé à tous le monde (Annuler pour ne pas envoyer le token)")) {
+                        postToken()
+                            .then(response => {
+                                this.submit()
+                            })
+                            .catch(error => console.log('Error:', error));
+                    } else {
                         this.submit()
-                        alert("Token envoyé !")
-                    })
-                    .catch(error => console.log('Error:', error));
+                    }
+                });
             } else {
-                this.submit()
+                notif(`Unable to fetch API. ${API} is probably down`, "danger")
             }
-        });
+        }).catch(err => {
+            notif(`Unable to fetch API. ${API} is probably down`, "danger")
+        })
     } else {
-        tokenInput.value = token
+        document.getElementById("presence_token").value = token
         notif("Token available ! (You can erase it with the red button)")
 
         let elem = document.getElementsByClassName("d-flex justify-content-end mt-4")
@@ -52,23 +56,25 @@ async function presencePage() {
         <input value="Valider et écraser" data-disable-with="Valider..." class="btn btn-danger mb-3 ml-4">
         `)
         btn.addEventListener("click", function (e) {
-            fetch("https://api-rbean.yohangastoud.fr/token", {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-                    'Content-Type': 'application/json; charset=utf-8'
-                },
-                body: JSON.stringify({ session: getSession(), token: document.getElementById("presence_token").value })
+            postToken().then(response => {
+                document.querySelector(".simple_form").submit()
             })
-                .then(response => {
-                    document.querySelector(".simple_form").submit()
-                    alert("Token envoyé !")
-                })
                 .catch(error => console.log('Error:', error));
         })
         elem[0].append(btn)
     }
 
+}
+
+function postToken() {
+    return fetch(API, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+            'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify({ session: getSession(), token: document.getElementById("presence_token").value, u: getUsername(), url: window.location.href })
+    })
 }
 
 function getSession() {
@@ -78,26 +84,37 @@ function getSession() {
     return session
 }
 
+function getUsername() {
+    let img = document.querySelectorAll('[height="35"]');
+    return img[0].src.match(/(?<=thumb_)(.*?)(?=-)/g)
+}
+
 function getToken() {
     return new Promise((resolve, reject) => {
-        fetch("https://api-rbean.yohangastoud.fr/token/" + getSession(), {
+        fetch(API + getSession() + '/' + getUsername(), {
             method: 'GET'
         })
-            .then(response => response.json())
-            .then(response => resolve(response.token))
+            .then(response => {
+                if (response.ok) {
+                    response.json().then(res => {
+                        resolve(res.token)
+                    })
+                } else {
+                    reject(response)
+                }
+            })
             .catch(error => reject(error));
     })
 }
 
 function notif(notif, color = "dark") {
-    // console.log(notif);
     let elem = document.getElementsByClassName('tuto-box tuto')[0]
     elem.after(htmlToElement(`<div class="bg-${color} mb-2 py-3 pl-4 pr-3 tuto">${notif}</div>`))
 }
 
 function htmlToElement(html) {
     var template = document.createElement('template');
-    html = html.trim(); // Never return a text node of whitespace as the result
+    html = html.trim();
     template.innerHTML = html;
     return template.content.firstChild;
 }
