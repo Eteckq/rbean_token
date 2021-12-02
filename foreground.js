@@ -29,7 +29,7 @@ async function presencePage() {
     if (!token) {
         fetch(API).then(response => {
             if (response.ok) {
-                notif("No token available. Submit your token to share it !", "warning")
+                notif("No token available. Submit your token to share it !", "warning text-light")
                 document.querySelector(".simple_form").addEventListener("submit", function (e) {
                     if (confirm("Le token va être envoyé à tous le monde (Annuler pour ne pas envoyer le token)")) {
                         postToken()
